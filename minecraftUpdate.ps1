@@ -34,7 +34,7 @@ if (($backupResult | findstr "Everything is Ok") -ne '') {
     Write-Output "backup completed successfully"
 }
 
-Write-Host "Getting verision manifest"
+Write-Host "Getting version manifest"
 $jsonVersions = Invoke-WebRequest -Uri https://launchermeta.mojang.com/mc/game/version_manifest.json | ConvertFrom-Json
 $latestVersion = $jsonVersions.latest.release
 Write-Host "Latest version is $latestVersion"
@@ -46,7 +46,7 @@ $jsonLatestVersion = Invoke-WebRequest -Uri $downloadVersion.url | ConvertFrom-J
 $jarUrl = $jsonLatestVersion.downloads.server.url
 
 # Determine what the jar file name will be
-$minecraftJar = "minecraft_server." + $minecraftLatestVersion + ".jar"
+$minecraftJar = "minecraft_server." + $latestVersion + ".jar"
 Write-Host "We'll name the server.jar $minecraftJar"
 
 # Set the location and file name to save the downloaded file to
@@ -62,7 +62,7 @@ if ($true -eq (Test-Path $jarPath)) {
     $webclient = New-Object System.Net.WebClient
 
     # Using the webclient, download the file in the $url to $jarPath
-    Write-Verbose
+    Write-Host "Updating server to $latestVersion"
     $webclient.DownloadFile($jarUrl, $jarPath)
 
 }
